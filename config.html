@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Display Config</h2>
+<table>
+	<tr>
+		<td>Name</td>
+		<td>OSC IP</td>
+		<td>OSC Port</td>
+		<td>OSC Path</td>
+		<td>OSC Type (i/s)</td>
+		<td>Osc Value</td>
+		<td></td>
+	</tr>
+	<tr>
+		<form action="/setButton" method="post">
+			<input type="hidden" name="id" value="1">
+		<td>Button 1</td>
+		<td><input type="text" name="ip"></td>
+		<td><input type="number" name="port"></td>
+		<td><input type="text" name="path"></td>
+		<td><input type="text" name="type"></td>
+		<td><input type="text" name="value"></td>
+		<td><input type="submit" value="Update">
+		</form>
+	</tr>
+	<tr>
+		<form action="/setButton" method="post">
+			<input type="hidden" name="id" value="2">
+		<td>Button 2</td>
+		<td><input type="text" name="ip"></td>
+		<td><input type="number" name="port"></td>
+		<td><input type="text" name="path"></td>
+		<td><input type="text" name="type"></td>
+		<td><input type="text" name="value"></td>
+		<td><input type="submit" value="Update">
+		</form>
+	</tr>
+	<tr>
+		<form action="/setButton" method="post">
+			<input type="hidden" name="id" value="3">
+		<td>Button 3</td>
+		<td><input type="text" name="ip"></td>
+		<td><input type="number" name="port"></td>
+		<td><input type="text" name="path"></td>
+		<td><input type="text" name="type"></td>
+		<td><input type="text" name="value"></td>
+		<td><input type="submit" value="Update">
+		</form>
+	</tr>
+	<tr>
+		<form action="/setButton" method="post">
+			<input type="hidden" name="id" value="4">
+		<td>Button 4</td>
+		<td><input type="text" name="ip"></td>
+		<td><input type="number" name="port"></td>
+		<td><input type="text" name="path"></td>
+		<td><input type="text" name="type"></td>
+		<td><input type="text" name="value"></td>
+		<td><input type="submit" value="Update">
+		</form>
+	</tr>
+
+</table>
+<br>
+<form action="/setBrightness" method="post">
+	<label>Tally Brightness:</label>
+	<input type="number" min="0" max="7" name="tally">
+	<label>Display Brightness:</label>
+	<input type="number" min="0" max="3" name="display">
+	<input type="submit" value="Update">
+</form>
+
+<br>
+<form action="/setDefaultDisplay" method="post">
+	<label>Default Display Text:</label>
+	<input type="text" name="displayText">
+	<input type="submit" value="Update">
+</form>
+<br>
+<form action="/setDefaultDisplay2" method="post">
+	<label>Default Display2 Text:</label>
+	<input type="text" name="displayText">
+	<input type="submit" value="Update">
+</form>
+
+<br>
+<form action="/identify" method="post">
+	<input type="submit" value="Identify" style="height:40px;">
+</form>
+
+<script>
+	var getJSON = function(url, callback) {
+	    var xhr = new XMLHttpRequest();
+	    xhr.open('GET', url, true);
+	    xhr.responseType = 'json';
+	    xhr.onload = function() {
+	      var status = xhr.status;
+	      if (status === 200) {
+	        callback(null, xhr.response);
+	      } else {
+	        callback(status, xhr.response);
+	      }
+	    };
+	    xhr.send();
+	};
+    getJSON('buttons',function(err,data) {
+    	if (err !== null) {
+    		alert("Something went wrong: "+err);
+    	} else {
+    		for (i in data) {
+    			document.getElementsByName("ip")[i].value = data[i][0];
+    			document.getElementsByName("port")[i].value = data[i][1];
+    			document.getElementsByName("path")[i].value = data[i][2];
+    			document.getElementsByName("type")[i].value = data[i][3];
+    			document.getElementsByName("value")[i].value = data[i][4];
+    		}
+    	}
+    });
+    getJSON("brightness",function(err,data) {
+    	if (err !== null) {
+    		alert("Something went wrong: "+err);
+    	} else {
+    		document.getElementsByName("tally")[0].value = data[0];
+    		document.getElementsByName("display")[0].value = data[1];
+    	}
+    });
+    getJSON("defaultDisplay",function(err,data) {
+    	if (err !== null) {
+    		alert("Something went wrong: "+err);
+    	} else {
+    		document.getElementsByName("displayText")[0].value = data[0];
+    		document.getElementsByName("displayText")[1].value = data[1];
+    	}
+    });
+</script>
+
+</body>
+</html>
